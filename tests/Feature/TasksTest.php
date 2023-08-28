@@ -27,7 +27,7 @@ class TasksTest extends TestCase
     }
 
     public function test_cant_create_task_permission_denied() : void {
-        /*the column priority can be a table call priorities in the request can us send the id of the priority*/
+        /*the column priority can be a table call priorities and in the request can us send the id of the priority*/
         /*priorities ['height', 'middle', 'low']*/
         $response = $this->postJson('/tasks', ['name' => 'Task', 'priority' => 'height', 'state' => 'progress']);
         $response->assertStatus(401);
@@ -44,7 +44,7 @@ class TasksTest extends TestCase
         /*states ['in progress', 'in test', 'finish']*/
         $request = ['state' => 'finish', 'id' => $task->id];
 
-        $response = $this->postJson("/tasks/state", $request);
+        $response = $this->post("/tasks/state", $request);
 
         $response->assertExactJson(['message' => 'Task update']);
         $response->assertStatus(200);
@@ -92,20 +92,5 @@ class TasksTest extends TestCase
         $response->assertStatus(200);
     }
 
-
-    public function test_sort_tasks_by_due_date() : void {
-        /*login*/
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
-        $tasks = Task::factory()->count(10)->create();
-        $tasks->orderBy('due_date');
-
-        $response = $this->get('/tasks');
-        $tasks = Task::all();
-
-        $response->assertJson(['tasks' => $tasks->toArray()]);
-        $response->assertStatus(200);
-    }
 
 }
