@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
+    Route::post('/tasks/state', [TaskController::class, 'updateState'])->name('tasks.chage_state');
     Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
 });
 
